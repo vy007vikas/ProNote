@@ -1,0 +1,43 @@
+body{
+	background: url("./images/wall.jpg") no-repeat;
+	background-size: cover;
+}
+.fullbody{
+	background: rgba(200,200,200,0.7);
+	height: 100%;
+}
+.header{
+	text-align: center;
+}
+.heading{
+	font-family: "lobster";
+	font-size: 5em;
+	color: #0078e7;
+	/*------------For rainbow text-----------------*/
+	/*background-image:-webkit-gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );
+	color: transparent;
+	-webkit-background-clip: text;*/
+}
+.header h3{
+	font-family: "HelveticaNeueLTPro-UltLt";
+	font-size: 2em;
+}
+.content div{
+	text-align: center;
+	margin: 10px;
+	margin-left: 13%; 
+	font-family: "HelveticaNeueLTPro-UltLt";
+	font-size: 1.1em;
+	float: left;
+}
+.about{
+	margin-left: 100px;
+	font-family: "Bowhouse-Light";
+	max-width: 350px;
+}
+.bottombar{
+	text-align: center;
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+}

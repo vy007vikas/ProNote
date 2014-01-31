@@ -1,0 +1,24 @@
+@font-face{
+  font-family: 'HelveticaNeueLTPro-UltLt';
+  src: url("./HelveticaNeueLTPro-UltLt.otf");
+}
+@font-face {
+    font-family: 'Aaargh';
+    src: url("Aaargh.ttf");
+}
+@font-face {
+    font-family: 'strasua';
+    src: url("strasua.otf");
+}
+@font-face {
+    font-family: 'lobster';
+    src: url("Lobster 1.4.otf");
+}
+@font-face{
+	font-family: "Bowhouse-Light";
+	src: url("Bowhouse-Light.otf");
+}
+@font-face{
+  font-family: "Bowhouse-Regular";
+  src: url("Bowhouse-Regular.otf");
+}
