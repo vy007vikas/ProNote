@@ -30,6 +30,10 @@ body{
 	font-size: 1.1em;
 	float: left;
 }
+.message{
+	font-family: "Bowhouse-Light";
+	font-size: 1.5em;
+}
 .about{
 	margin-left: 100px;
 	font-family: "Bowhouse-Light";

@@ -6,20 +6,27 @@
 		header("Location:../index.php");
 	}
 
+
 	function printName(){
+		//Printing the name of the user
 		include('../config.inc');
-		$resultprintName = $link->query("select * from userdata where idno='$_SESSION[userid]'");
-		$rowprintName = mysqli_fetch_array($resultprintName);
-		echo $rowprintName['name'];
+		$resultprintName = $link->prepare('SELECT * FROM userdata WHERE userid=:vuserid');
+		$resultprintName->bindParam(':vuserid',$_SESSION['userid']);
+		$resultprintName->execute();
+		$resultnamerow = $resultprintName->fetch(PDO::FETCH_ASSOC);
+		echo $resultnamerow['name'];
 	}
 
 	function showNotes(){
+		//Displaying the notes of the user
 		include('../config.inc');
-		$resultshowNotes = $link->query("select * from allNotes where idno='$_SESSION[userid]'");
-		$noofrowshowNotes = mysqli_num_rows($resultshowNotes);
-		if($noofrowshowNotes==0){
+		$resultshowNotes = $link->prepare('SELECT * FROM allNotes WHERE userid=:userid');
+		$resultshowNotes->bindParam(':userid',$_SESSION['userid']);
+		$resultshowNotes->execute();
+		if($resultshowNotes->rowCount()==0){
 		} else {
-			while($arrayvar = mysqli_fetch_array($resultshowNotes)){
+			while($arrayvar = $resultshowNotes->fetch(PDO::FETCH_ASSOC)){
+				//Display one by one all the notes by forming div as shown
 				$myvar = $arrayvar['index'];
 				echo "<div class='note' id='" . $myvar . "'>";
 				echo "<div class='heading'>";
@@ -44,9 +51,6 @@
 		<link rel="stylesheet" type="text/css" href="../pure-rollup.css">
 		<script src="../index.js"></script>
 		<script src="../jquery-1.10.2.min.js"></script>
-		<script src="../jquery.parallax-1.1.3.js"></script>
-		<script src="../jquery.localscroll-1.2.7-min.js"></script>
-		<script src="../jquery.scrollTo-1.4.2-min.js"></script>
 		<script>
 		
 		function addNote(){
@@ -57,17 +61,23 @@
 				$.ajax({
 					url: "./addNote.php",
 					type: 'POST',
-					data: 'heading='+heading+'&data='+data,
+					data: {
+						heading: heading,
+						data: data
+					},
 					success:function(received){
-						received = JSON.parse(received);
-						var newdiv = '<div class="note" id="' + received[1] +'">';
-						newdiv += '<div class="heading">' + received[0] + '</div>';
-						newdiv += "<img src='../images/temp/delete.png' onclick='deleteNote(" + received[1] + ")'>";
-						newdiv += '<div class="data">' + received[2] + '</div>';
-						newdiv += '</div>';
-						$('#allnotes').append(newdiv);
-						$('#newnoteheading').val('');
-						$('#newnotedata').val('');
+						if(!(received==0)){
+							//If there was no problem enetering the note in the database
+							//make a new div for the note
+							var newdiv = '<div class="note" id="' + received +'">';
+							newdiv += '<div class="heading">' + heading + '</div>';
+							newdiv += "<img src='../images/temp/delete.png' onclick='deleteNote(" + received + ")'>";
+							newdiv += '<div class="data">' + data + '</div>';
+							newdiv += '</div>';
+							$('#allnotes').append(newdiv);
+							$('#newnoteheading').val('');
+							$('#newnotedata').val('');
+						}						
 					}
 				});
 			}
@@ -77,9 +87,15 @@
 			$.ajax({
 				url: "./delNote.php",
 				type: 'POST',
-				data: 'index='+myVar,
-				success:function(){
+				data: {
+					index: myVar
+				},
+				success:function( data ){
 					$("#"+myVar).hide();
+					console.log(data);
+				},
+				error: function(data) {
+					console.log(data);
 				}
 			});
 		}

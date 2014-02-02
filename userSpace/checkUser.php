@@ -20,18 +20,24 @@
 			<?php
 				session_start();
 
-				$noOfRows = checkPass();
-				if($noOfRows==1){
-					$_SESSION['userid'] = $_POST['userid'];
-					header("Location:./userBoard.php");
-				} else {
-					echo "Wrong user ID or password. Please login again to continue.<br>";
-				}
+				//Storing username and password hash
+				$userid = $_POST['userid'];
+				$passwordHash = sha1($_POST['password']);
 
-				function checkPass(){
-					include('../config.inc');
-					$result = $link->query("select * from userdata where password='$_POST[password]' and idno='$_POST[userid]'");
-					return mysqli_num_rows($result);
+				include('../config.inc');
+				//Checking for the user info
+				$result = $link->prepare("SELECT * FROM userdata WHERE userid=:userid AND password=:passwordHash");
+				$result->bindParam(':userid',$userid);
+				$result->bindParam(':passwordHash',$passwordHash);
+				if($result->execute()){
+					if($result->rowCount()==1){
+						//if any such user exists
+						$_SESSION['userid'] = $_POST['userid'];
+						header("Location:./userBoard.php");
+					} else {
+						//Incorrect info provided
+						echo "Wrong user ID or password. Please login again to continue.<br>";
+					}
 				}
 
 			?>

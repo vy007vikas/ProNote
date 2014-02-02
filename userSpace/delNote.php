@@ -5,10 +5,12 @@
 		header("Location:../index.php");
 	}
 
-	include('../config.inc');
+	//Storing the index of the note to be deleted in $tbd
 	$tbd = $_POST['index'];
 	//Deleting code
-	$temp = "DELETE FROM `allNotes` WHERE `index` = $tbd";
-	$deleteresult = $link->query($temp);
+	include('../config.inc');
+	$result = $link->prepare('DELETE FROM allNotes WHERE `index` = :tbd');
+	$result->bindParam(':tbd',$tbd);
+	$result->execute();
 
 ?>
